@@ -12,7 +12,7 @@ from __future__ import annotations
 import io
 import json
 import re
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass
 
 # ---------------------------------------------------------------- trigger sets
 # Mutually exclusive trigger sets used by the coverage classifier below.
@@ -100,10 +100,6 @@ def apply_edits(tokens: list, edits: list) -> str:
         repl = e.correction.split(' ') if e.correction else []
         toks[e.start:e.end] = repl
     return ''.join(toks)
-
-
-def edit_op(label: str) -> str:
-    return label.split(':')[0]
 
 
 # ------------------------------------------------------- meta-reference filter

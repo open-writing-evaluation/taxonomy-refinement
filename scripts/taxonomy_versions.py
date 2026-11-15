@@ -17,7 +17,6 @@ Extension analysis is otherwise code-level.
 """
 from __future__ import annotations
 
-import os
 import yaml
 
 POS = {'VERB', 'NOUN', 'ADJ', 'ADV', 'PART', 'AUX', 'PREP', 'CLF', 'CONJ', 'X'}
@@ -37,8 +36,6 @@ VERSIONS = {
                    'CONST', 'ARG', 'COMP', 'STR', 'NEG', 'MIX', 'LEX'},
         dom_synonyms={'STRUCT': 'SYNT', 'STRUCTURAL': 'SYNT',
                       'SYNTACTIC': 'SYNT', 'SYNTAX': 'SYNT'},
-        # deterministic components of the domain rule stated by this version:
-        rule={'muwo_dom': None, 'r_never': None},   # fully judgment-based
     ),
     'T2': dict(
         doms={'LEX-CONT', 'LEX-FUNC', 'SYNT'},
@@ -47,7 +44,6 @@ VERSIONS = {
                    'CONST', 'ARG', 'COMP', 'STR', 'NEG', 'MIX'},
         dom_synonyms={'STRUCT': 'SYNT', 'STRUCTURAL': 'SYNT',
                       'SYNTACTIC': 'SYNT', 'SYNTAX': 'SYNT'},
-        rule={'muwo_dom': 'SYNT', 'r_never': None},  # convention for M/U/WO only
     ),
     'T3': dict(   # endpoint label space
         doms={'LEX-CONT', 'LEX-FUNC', 'STRUCT'},
@@ -56,7 +52,6 @@ VERSIONS = {
                    'FOC', 'CONST', 'ARG', 'COMP', 'STR', 'NEG', 'CLF', 'MIX'},
         dom_synonyms={'SYNT': 'STRUCT', 'SYNTACTIC': 'STRUCT',
                       'STRUCTURAL': 'STRUCT', 'SYNTAX': 'STRUCT'},
-        rule={'muwo_dom': 'STRUCT', 'r_never': 'STRUCT'},
     ),
 }
 VERSIONS['T1P'] = VERSIONS['T1']
@@ -90,7 +85,7 @@ def norm_one(row, version):
     values (e.g. M:ORTH under T1, an extension code outside the version's
     inventory) are kept as label values with valid=True and a `nonschema` note,
     so that the disagreement they create is analyzed as annotation behavior
-    and tabulated separately by the diagnosis tooling.
+    and counted separately (40_normalize.py).
     """
     v = VERSIONS[version]
     a = row.get('annotation')

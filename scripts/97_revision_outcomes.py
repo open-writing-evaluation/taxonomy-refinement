@@ -8,8 +8,8 @@ For each predicted target of each revision in the two revision records:
   - whether it moved in the predicted direction (confusion falls,
     agreement rises);
   - a 95% bootstrap interval for the change, resampling whole sentences
-    (B = 2000, the estimator of 94_sensitivity.delta_ci applied to every
-    target). Item sets with fewer than MIN_ITEMS edits are not tested.
+    (B = 2000). A change is significant when the interval excludes zero.
+    Item sets with fewer than MIN_ITEMS edits are not tested.
 
 For each revision: how many of its targets moved as predicted, per sample.
 A revision counts as "as predicted" when all of its targets did.
@@ -20,8 +20,7 @@ a set of fewer than 20 edits), the number of predicted confusions that do
 not occur there, and the share of the annotations of modal edits that use
 the modality label under T1, T2, and T3.
 
-Targets and values are the same as in 60_linkage.py (an item-set target is
-scored on its first listed metric).
+An item-set target is scored on its first listed metric.
 
 Writes outputs/results/revision_outcomes.json and revision_outcomes.csv.
 
@@ -169,7 +168,7 @@ def score(target, before_run, after_run, sample):
             moved = 'as predicted' if change > 0 else ('no change' if change == 0 else 'against')
     res['moved'] = moved
     iv = res['interval']
-    res['beyond_noise'] = bool(iv and (iv[1] < 0 or iv[0] > 0)) and not res['removed_by_revision']
+    res['significant'] = bool(iv and (iv[1] < 0 or iv[0] > 0)) and not res['removed_by_revision']
     return res
 
 
@@ -207,8 +206,8 @@ def main():
     for s in SAMPLES:
         summary[f'{s}_revisions'] = dict(collections.Counter(r[f'{s}_outcome'] for r in measurable))
         summary[f'{s}_targets_moved'] = dict(collections.Counter(t[s]['moved'] for t in distinct.values()))
-        summary[f'{s}_targets_beyond_noise'] = dict(collections.Counter(
-            t[s]['moved'] for t in distinct.values() if t[s]['beyond_noise']))
+        summary[f'{s}_targets_significant'] = dict(collections.Counter(
+            t[s]['moved'] for t in distinct.values() if t[s]['significant']))
 
     second = [t for t in distinct.values() if t['step'] == 'r2->r3']
     summary['second_step_targets'] = len(second)
@@ -228,8 +227,8 @@ def main():
     with open(os.path.join(out_dir, 'revision_outcomes.csv'), 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow(['revision', 'title', 'diagnosis', 'changes', 'target',
-                    'dev_before', 'dev_after', 'dev_n', 'dev_moved', 'dev_beyond_noise',
-                    'test_before', 'test_after', 'test_n', 'test_moved', 'test_beyond_noise'])
+                    'dev_before', 'dev_after', 'dev_n', 'dev_moved', 'dev_significant',
+                    'test_before', 'test_after', 'test_n', 'test_moved', 'test_significant'])
         for r in measurable:
             for t in r['targets']:
                 def cell(d, key):
@@ -238,9 +237,9 @@ def main():
                     return '' if d[key] != d[key] else f"{d[key]:.1f}%"
                 w.writerow([r['id'], r['title'], '+'.join(r['diagnosis']), '+'.join(r['changes']), t['target'],
                             cell(t['dev'], 'before'), cell(t['dev'], 'after'), t['dev']['n'],
-                            t['dev']['moved'], t['dev']['beyond_noise'],
+                            t['dev']['moved'], t['dev']['significant'],
                             cell(t['test'], 'before'), cell(t['test'], 'after'), t['test']['n'],
-                            t['test']['moved'], t['test']['beyond_noise']])
+                            t['test']['moved'], t['test']['significant']])
     print(json.dumps(summary, indent=1))
     for r in measurable:
         print(f"{r['id']}  dev {r['dev_as_predicted']}/{len(r['targets'])}  "

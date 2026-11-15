@@ -215,9 +215,6 @@ def main():
     if args.only:
         keep = set(args.only.split(','))
         models = [m for m in models if m['id'] in keep]
-    for m in models:
-        if 'PIN_ME' in m['model']:
-            sys.exit(f"Model '{m['id']}' is not pinned yet - edit config/models.yaml.")
 
     instances = load_jsonl(args.instances)
     if args.limit:

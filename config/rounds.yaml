@@ -38,18 +38,3 @@ adjudication:
   h_n: 150
   seed: 20260717
   source: data/samples/d_test.jsonl
-
-# Population stratum shares over all 4,426 non-artifact first-reference
-# edits in the source pool (58 meta-comment sentences excluded), computed
-# with m2_utils.stratum from the full M2 file. These are the population
-# shares reported alongside the sampling allocations in the paper's
-# sampling table.
-population_stratum_weights:
-  orth_punc: 0.1211
-  orth_sim: 0.1188
-  residual_closed: 0.1279
-  residual_mixed: 0.1482
-  residual_open: 0.3057
-  trigger_other: 0.1245
-  trigger_str: 0.0513
-  wo_co: 0.0025

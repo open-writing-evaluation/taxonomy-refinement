@@ -22,18 +22,12 @@ python scripts/20_sample_datasets.py --instances outputs/instances.jsonl
 cmp outputs/samples/d_ref.jsonl  data/samples/d_ref.jsonl
 cmp outputs/samples/d_test.jsonl data/samples/d_test.jsonl
 
-# 2. Normalize the labels, then agreement and confusion per version and sample.
+# 2. Normalize the labels, then agreement among the five models per version
+#    and sample.
 for RUN in r1 ctrl r2 r3; do
   python scripts/40_normalize.py --run-id $RUN
   for S in $SAMPLES; do
     python scripts/50_agreement.py --run-id $RUN --models $PANEL --instances $S
-    python scripts/55_confusion.py --run-id $RUN --models $PANEL --instances $S
-  done
-done
-# confusion in each version's own label names
-for RUN in r1 ctrl r2; do
-  for S in $SAMPLES; do
-    python scripts/55_confusion.py --run-id $RUN --models $PANEL --instances $S --no-crosswalk
   done
 done
 
@@ -46,9 +40,14 @@ for RUN in r1 r3; do
   done
 done
 
-# 4. Recorded predictions of the two revision records.
-python scripts/60_linkage.py --log specs/revision_log_T1_T2.yaml --before r1 --after r2 --models $PANEL
-python scripts/60_linkage.py --log specs/revision_log_T2_T3.yaml --before r2 --after r3 --models $PANEL
+# 4. Confusion between labels under T1, T2, and T3, in the label names of
+#    T3, and under T1 in its own label names.
+for RUN in r1 r2 r3; do
+  for S in $SAMPLES; do
+    python scripts/55_confusion.py --run-id $RUN --models $PANEL --instances $S
+  done
+done
+python scripts/55_confusion.py --run-id r1 --models $PANEL --instances data/samples/d_ref.jsonl --no-crosswalk
 
 # 5. Expert check: agreement between the two experts, then the models
 #    against the expert consensus.
@@ -57,11 +56,11 @@ python scripts/80_coder_agreement.py compare \
 python scripts/85_validity.py --run-id r3 --sheet outputs/adjudication/h_T3_sheet_consensus.xlsx
 python scripts/85_validity.py --run-id r2 --sheet outputs/adjudication/h_T3_sheet_consensus.xlsx --crosswalk
 
-# 6. Assembled tables and checks.
+# 6. Gains across versions, the shared label set, and the sentence-overlap
+#    check.
 python scripts/90_trajectory.py --panel $PANEL
 python scripts/92_common_space.py
 python scripts/94_sensitivity.py
-python scripts/96_target_ci.py
 
 # 7. Disagreement under the initial version, the outcome of every recorded
 #    prediction, the domain rule, and the two figures.

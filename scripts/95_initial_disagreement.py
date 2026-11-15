@@ -12,7 +12,7 @@ subsection:
   - each model's agreement with itself across two identical runs.
 
 Run after 50_agreement.py (panel and --floor runs) and 55_confusion.py
-(with and without --no-crosswalk) for run r1 on the development set.
+--no-crosswalk for run r1 on the development set.
 
 Usage:
     python scripts/95_initial_disagreement.py

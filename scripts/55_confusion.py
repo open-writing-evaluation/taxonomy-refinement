@@ -3,12 +3,11 @@
 
 Counts symmetric pair disagreements across the panel. With --crosswalk
 (default ON), T1/T1P records are mapped into the final label space
-(SYNT->STRUCT, WO:ORTH->CO:ORTH) so pairs are comparable across rounds -
-which the revision-linkage analysis (60_linkage.py) requires. Raw-space
-output is available with --no-crosswalk.
+(SYNT->STRUCT, WO:ORTH->CO:ORTH) so pairs are comparable across rounds.
+Raw-space output is available with --no-crosswalk.
 
-Writes per-layer pair CSVs + a machine-readable JSON (consumed by
-60_linkage.py).
+Writes per-layer pair CSVs + a machine-readable JSON (read by
+95_initial_disagreement.py and 99_figures.py).
 
 Usage:
     python scripts/55_confusion.py --run-id r1 --models claude,gpt,qwen,deepseek,kimi \
