@@ -86,7 +86,7 @@ that way.
 
 Copyright © 2026 The Authors. All rights reserved except as granted below.
 
-- Code in `scripts/` and `config/` is licensed under the [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
+- Code in `scripts/` and `config/`, together with `reproduce.sh` and `environment.yml`, is licensed under the [MIT License](LICENSE).
 - Original documentation, guidelines, annotations, and other research materials are licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
-- Noncommercial use, modification, and redistribution are permitted with attribution. Commercial use—including commercial use of modified or derivative works—is prohibited without prior written permission from the copyright holders.
+- For these materials, noncommercial use, modification, and redistribution are permitted with attribution. Commercial use, including commercial use of modified or derivative works, is prohibited without prior written permission from the copyright holders.
 - Third-party materials, including MuCGEC data, remain subject to their original licenses and terms. Nothing in this repository relicenses those materials.
