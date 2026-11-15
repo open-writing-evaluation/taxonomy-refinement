@@ -31,10 +31,10 @@ committed). The two figures are redrawn in `figures/`.
 | Table 3 and Figure 1, agreement among the models | `50_agreement.py`, `92_common_space.py` |
 | Section 4.1, disagreement under T1 | `55_confusion.py`, `95_initial_disagreement.py` |
 | Section 4.2, agreement across versions and the checks | `50_agreement.py`, `90_trajectory.py`, `92_common_space.py`, `94_sensitivity.py`, `98_rule_compliance.py`, `40_normalize.py` |
-| Table 4 and Section 4.3, revision outcomes | `97_revision_outcomes.py` |
-| Table 5 and Section 4.4, expert check | `80_coder_agreement.py`, `85_validity.py` |
+| Table 4, intra-annotator agreement | `50_agreement.py --floor` |
+| Table 5 and Section 4.3, revision outcomes | `97_revision_outcomes.py` |
+| Table 6 and Section 4.4, expert check | `80_coder_agreement.py`, `85_validity.py` |
 | Table 7, sampling | `10_build_instances.py`, `20_sample_datasets.py` |
-| Table 8, intra-annotator agreement | `50_agreement.py --floor` |
 | Figures 1 and 2 | `99_figures.py` |
 
 ## Names in the paper and in the files
@@ -54,7 +54,7 @@ committed). The two figures are redrawn in `figures/`.
 | Expert check | `outputs/adjudication/`; the 150 edits are "H" |
 | Expert 1 (led the design), expert 2 (no part in it) | coder 1, coder 2 (`c2`) |
 
-Table 4 numbers the 17 revisions with a measurable target in the order of
+Table 5 numbers the 17 revisions with a measurable target in the order of
 the revision record. Revisions 1 and 2 are RL1-01 and RL1-02. Revisions 3
 to 17 are RL2-01 to RL2-17 without RL2-07 and RL2-10. Those two and RL2-18
 have no measurable target.
