@@ -1,0 +1,59 @@
+{
+  "models": [
+    {
+      "id": "claude",
+      "provider": "anthropic",
+      "model": "claude-sonnet-5",
+      "params": {
+        "max_tokens": 16000
+      }
+    },
+    {
+      "id": "gpt",
+      "provider": "openai",
+      "model": "gpt-5.6-terra",
+      "params": {
+        "max_completion_tokens": 8000,
+        "reasoning_effort": "medium"
+      }
+    },
+    {
+      "id": "qwen",
+      "provider": "together",
+      "model": "Qwen/Qwen3.7-Max",
+      "stream": true,
+      "params": {
+        "max_tokens": 8000,
+        "temperature": 0.0
+      }
+    },
+    {
+      "id": "deepseek",
+      "provider": "together",
+      "model": "deepseek-ai/DeepSeek-V4-Pro",
+      "params": {
+        "max_tokens": 16000,
+        "temperature": 0.0
+      }
+    },
+    {
+      "id": "kimi",
+      "provider": "together",
+      "model": "moonshotai/Kimi-K2.6",
+      "params": {
+        "max_tokens": 24000,
+        "temperature": 0.0
+      }
+    }
+  ],
+  "repeat_runs": [
+    "claude",
+    "gpt",
+    "qwen"
+  ],
+  "request": {
+    "max_workers": 8,
+    "timeout_s": 180,
+    "max_retries": 6
+  }
+}

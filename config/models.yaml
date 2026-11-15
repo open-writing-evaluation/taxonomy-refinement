@@ -1,0 +1,61 @@
+# LLM annotator panel — pinned model snapshots. Do not change model
+# strings mid-study. This is the released panel configuration cited in the paper:
+# per-model output-token caps and decoding settings.
+#
+# Providers and API keys (read from the environment):
+#   anthropic -> ANTHROPIC_API_KEY
+#   openai    -> OPENAI_API_KEY
+#   together  -> TOGETHER_API_KEY  (OpenAI-compatible endpoint, https://api.together.xyz/v1)
+#
+# Output-cap policy: the cap is an anti-truncation guard. Baseline 8000 for
+# all annotators, raised per model during piloting until no response in the
+# final data was truncated (Claude 16000; DeepSeek 16000; Kimi 24000). The
+# runner prints a finish=length warning if any model still hits its cap.
+#
+# Decoding policy (provider behavior at the time of the study):
+# * claude-sonnet-5: temperature/top_p/top_k are not supported (non-default
+#   values return a 400 error); adaptive thinking is on by default. We use
+#   provider-default decoding; repeat runs provide the within-model
+#   reliability floor. Set thinking: "disabled" to turn adaptive thinking off.
+# * gpt-5.6-terra: no temperature parameter; reasoning_effort is pinned
+#   explicitly to the default (medium). max_completion_tokens includes
+#   reasoning tokens.
+# * Together (Qwen/DeepSeek/Kimi): standard sampling; temperature 0.
+
+models:
+  - id: claude
+    provider: anthropic
+    model: "claude-sonnet-5"           # dateless ID = pinned snapshot
+    params:
+      max_tokens: 16000                # adaptive-thinking tokens count against this
+    # thinking: "disabled"             # uncomment to disable adaptive thinking
+  - id: gpt
+    provider: openai
+    model: "gpt-5.6-terra"
+    params:
+      max_completion_tokens: 8000      # reasoning tokens count against this
+      reasoning_effort: "medium"       # pin the default explicitly
+  - id: qwen
+    provider: together
+    model: "Qwen/Qwen3.7-Max"
+    stream: true                       # served streaming-only
+    params:
+      max_tokens: 8000
+      temperature: 0.0
+  - id: deepseek
+    provider: together
+    model: "deepseek-ai/DeepSeek-V4-Pro"
+    params:
+      max_tokens: 16000
+      temperature: 0.0
+  - id: kimi
+    provider: together
+    model: "moonshotai/Kimi-K2.6"
+    params:
+      max_tokens: 24000                # long-tail reasoning traces
+      temperature: 0.0
+
+request:
+  max_workers: 8
+  timeout_s: 180
+  max_retries: 6

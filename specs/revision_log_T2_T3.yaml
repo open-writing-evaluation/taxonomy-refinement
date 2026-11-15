@@ -1,0 +1,302 @@
+# Prediction-locked revision log: T2 -> T3 (endpoint: full inventory +
+# deterministic rule + packaging guidelines).
+#
+# Registered before any round ran. Two evidence waves feed this
+# transition and are marked per entry in `motivation`/`evidence_probe`:
+#   (a) a documented expert revision predating the measurement study,
+#       registered here as predictions to be tested against round-2
+#       confusions on D_ref;
+#   (b) guideline-level packaging rules registered from an INDEPENDENT
+#       source: a disjoint 400-edit probe sample (d_probe) annotated by the
+#       same panel under the endpoint label space (evidence_probe fields).
+# At the round-2 diagnosis gate each entry is checked against the
+# observed round-2 confusion structure, amended or dropped as evidence
+# warrants, and specs/T3_taxonomy.md is frozen before round 3 runs.
+#
+# T3's endpoint label inventory was fixed in advance of the rounds.
+
+log: T2_T3
+entries:
+
+  # ---- (a) expert-revision changes, registered as round-2 predictions ---
+
+  - id: RL2-01
+    title: Judgment-based domain rule for R
+    diagnosis_types: [Boundary, Precedence]
+    description: >
+      T2 still assigns Replacement by configurational judgment ("changes
+      argument mapping, voice, or constructional licensing" -> SYNT).
+      Predicted recurrent competition between LEX-FUNC and SYNT (e.g., ba/bei
+      exchanges) and between LEX-CONT and SYNT on rewording replacements.
+    operations: [AddRule, AddPrecedence]
+    changes: >
+      Deterministic rule - R is never STRUCT; constructional confusions that
+      surface as replacements stay LEX-FUNC and carry the constructional
+      diagnosis in the extension (e.g., MIX:ba-bei).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: dom, u: LEX-FUNC, v: STRUCT}
+      - {kind: pair, layer: dom, u: LEX-CONT, v: STRUCT}
+
+  - id: RL2-02
+    title: WO dual use at character level
+    diagnosis_types: [BroadLabel]
+    description: >
+      T2 uses WO both for word/phrase reordering and for character
+      transposition (WO:ORTH); annotators are predicted to diverge on
+      character-order items between the orthographic and core readings.
+    operations: [Split, Rename]
+    changes: >
+      Orthographic-only operation CO; WO:ORTH becomes CO:ORTH; WO reserved
+      for word- and phrase-level reordering.
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: itemset, select: stratum, value: wo_co,
+         metrics: [comp_pairwise, screen_pairwise]}
+
+  - id: RL2-03
+    title: No label form for missing/redundant punctuation
+    diagnosis_types: [MissingLabel]
+    description: >
+      T2 prose assigns missing/redundant punctuation to ORTH but licenses
+      only R:ORTH and WO:ORTH; annotators facing punctuation insertion or
+      deletion are predicted to scatter across R:ORTH+punc, core M/U:SYNT,
+      and unlicensed M:ORTH/U:ORTH.
+    operations: [AddLabel, Clarify]
+    changes: >
+      Add M:ORTH and U:ORTH (punctuation only).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: itemset, select: stratum, value: orth_punc,
+         metrics: [screen_pairwise, comp_pairwise]}
+
+  - id: RL2-04
+    title: Modality gap in the extension inventory
+    diagnosis_types: [MissingLabel]
+    description: >
+      No MOD code although modal auxiliaries lead the closed-class residual
+      in the coverage analysis; modal edits must take none and are predicted
+      to scatter (none vs. out-of-inventory codes).
+    operations: [AddLabel]
+    changes: Add MOD (modality and volition; closed modal-auxiliary list).
+    motivation: expert_coverage
+    predicted_targets:
+      - {kind: itemset, select: coverage_class, value: "trigger:MOD",
+         metrics: [ext_pairwise, comp_pairwise]}
+
+  - id: RL2-05
+    title: Classifier gap in the extension inventory
+    diagnosis_types: [MissingLabel]
+    description: >
+      Classifiers are named in LEX-FUNC prose but have no extension code.
+    operations: [AddLabel]
+    changes: Add CLF (classifier-noun pairings).
+    motivation: expert_coverage
+    predicted_targets:
+      - {kind: itemset, select: coverage_class, value: "trigger:CLF",
+         metrics: [ext_pairwise, comp_pairwise]}
+
+  - id: RL2-06
+    title: ARG/CONST listed as one undifferentiated family
+    diagnosis_types: [Boundary]
+    description: >
+      A single "ARG/CONST" listing with no boundary or naming convention;
+      annotators predicted to alternate between the codes on
+      construction-related items.
+    operations: [Split, AddRule]
+    changes: >
+      Separate definitions - CONST names the construction (CONST:ba/bei/shi);
+      ARG names the grammatical role (ARG:object, ARG:subject).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: ext, u: ARG, v: CONST}
+
+  - id: RL2-07
+    title: SYNT construal broader than intended
+    diagnosis_types: [Boundary]
+    description: >
+      "Syntactic" invites a broad theoretical reading; the intended sense is
+      licensing-and-configuration. Supports RL2-01 by decoupling the domain
+      from "syntax" in the broad sense.
+    operations: [Rename]
+    changes: SYNT -> STRUCT (licensing and configuration).
+    motivation: interpretability
+    predicted_targets: []
+
+  - id: RL2-08
+    title: Content vs. functional adverbs undefined
+    diagnosis_types: [Boundary]
+    description: >
+      "Discourse-scope adverbs" are LEX-FUNC with no membership test; adverb
+      replacements predicted to split between LEX-CONT and LEX-FUNC.
+    operations: [AddRule]
+    changes: >
+      Closed-list rule - an adverb is functional exactly when it belongs to
+      TEMP, ADD, CONT, NEG, or DEG; otherwise LEX-CONT.
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: dom, u: LEX-CONT, v: LEX-FUNC}
+
+  - id: RL2-09
+    title: No packaging policy for decomposed or discontinuous edits
+    diagnosis_types: [Precedence, Boundary]
+    description: >
+      No WO test and no single-contrast merging policy; movements decomposed
+      into deletion-insertion pairs and cross-position paradigm exchanges
+      (le -> guo) predicted to split across M/R/U/WO.
+    operations: [AddRule]
+    changes: >
+      WO test (purely positional change = one WO edit); single-contrast
+      merging (discontinuous changes realizing one grammatical contrast = one
+      R edit in that paradigm).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: op, u: M, v: R}
+      - {kind: pair, layer: op, u: R, v: WO}
+
+  - id: RL2-10
+    title: Extension item naming unordered
+    diagnosis_types: [ProtocolError]
+    description: >
+      Replacement pairs have no canonical item order (ADD:dou-ye vs.
+      ADD:ye-dou) - normalization noise, not analytic disagreement.
+    operations: [Clarify]
+    changes: Canonical pair order = listing order in the extension table.
+    motivation: protocol
+    predicted_targets: []
+
+  - id: RL2-11
+    title: Construction-family codes lack precedence and licensor naming
+    diagnosis_types: [Precedence]
+    description: >
+      Unstated whether an item licensed by a construction takes the
+      word-level or construction code (missing 都 required by 连...都), and
+      that family codes may name the licensor (redundant 很 in a
+      比-comparative).
+    operations: [AddRule, Clarify]
+    changes: >
+      Precedence - construction-family code when the edited item is required
+      or licensed by a named construction; licensor naming (DEG:bi,
+      FOC:lian-dou).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: ext, u: ADD, v: FOC}
+      - {kind: pair, layer: ext, u: DEG, v: none}
+
+  # ---- (b) packaging guidelines, registered from the independent probe ---
+
+  - id: RL2-12
+    title: Containment edits packaged as replacements
+    diagnosis_types: [Precedence, Boundary]
+    description: >
+      Tool-side packaging presents pure insertions/deletions as R when one
+      side's characters contain the other's (就 -> 就是, 很 -> 很多); models
+      split between R and M/U, dragging the domain layer with them.
+    operations: [AddRule]
+    changes: >
+      Containment rule - strict character containment with contiguous
+      difference is M (target adds) or U (target drops), not R.
+    motivation: disagreement_probe
+    evidence_probe: "independent probe: op M~R S_uv=132 (top operation pair); adjudication convention C2"
+    predicted_targets:
+      - {kind: pair, layer: op, u: M, v: R}
+      - {kind: pair, layer: op, u: R, v: U}
+
+  - id: RL2-13
+    title: Movement decomposed or entangled
+    diagnosis_types: [Precedence]
+    description: >
+      Decomposed movements pass the WO test but models disagree on applying
+      it first; movement mixed with added/lost material (太 -> 也不) is not
+      purely positional and should keep the local operation.
+    operations: [AddPrecedence, AddRule]
+    changes: >
+      Packaging order - WO test first; containment second; entangled
+      movement keeps the local operation; cascade fragments labeled locally.
+    motivation: disagreement_probe
+    evidence_probe: "independent probe: decomposed movements within op M~R residue; conventions C4/C5, rows 38/40/66/73/112"
+    predicted_targets:
+      - {kind: pair, layer: op, u: R, v: WO}
+      - {kind: pair, layer: op, u: M, v: WO}
+      - {kind: itemset, select: stratum, value: wo_co, metrics: [comp_pairwise]}
+
+  - id: RL2-14
+    title: Multi-token rewordings lack a default analysis
+    diagnosis_types: [BroadLabel, Boundary]
+    description: >
+      Replacements over mixed/headless multi-token spans realize no single
+      paradigm contrast; models scatter across domains and between head POS
+      and X.
+    operations: [AddRule, AddExample]
+    changes: Rewording rule - such spans are R / LEX-CONT / X / none.
+    motivation: disagreement_probe
+    evidence_probe: "independent probe: dom LEX-CONT~STRUCT S_uv=145, LEX-CONT~LEX-FUNC S_uv=125, pos VERB~X S_uv=120; convention C3"
+    predicted_targets:
+      - {kind: pair, layer: dom, u: LEX-CONT, v: STRUCT}
+      - {kind: pair, layer: dom, u: LEX-CONT, v: LEX-FUNC}
+      - {kind: pair, layer: pos, u: VERB, v: X}
+      - {kind: itemset, select: stratum, value: residual_mixed,
+         metrics: [comp_pairwise, dom_pairwise]}
+
+  - id: RL2-15
+    title: POS threshold for X and tag-less items
+    diagnosis_types: [Boundary, FineGrained]
+    description: >
+      X threshold underspecified for single-head spans; pronouns, localizers,
+      pro-forms, and NUM+CLF units have no stated tag.
+    operations: [AddRule]
+    changes: >
+      Head rule (single-head span takes the head's POS); conventions -
+      personal pronouns NOUN, demonstrative/manner pro-forms X, localizers
+      PART, NUM+CLF units X, light verbs VERB.
+    motivation: disagreement_probe
+    evidence_probe: "independent probe: pos VERB~X S_uv=120 (top POS pair); convention C6, rows 10/71/77/98/105"
+    predicted_targets:
+      - {kind: pair, layer: pos, u: VERB, v: X}
+      - {kind: pair, layer: pos, u: NOUN, v: X}
+      - {kind: pair, layer: pos, u: NOUN, v: PART}
+
+  - id: RL2-16
+    title: ARG applicability and the none default
+    diagnosis_types: [Boundary]
+    description: >
+      Models disagree on whether reorderings/rewordings take ARG or none;
+      ARG's scope and a prefer-none default are unstated.
+    operations: [Clarify, AddPrecedence]
+    changes: >
+      ARG only for misplaced/doubled arguments of a predicate that stays put;
+      adjunct placement takes word-level codes; otherwise none.
+    motivation: disagreement_probe
+    evidence_probe: "independent probe: ext ARG~none S_uv=114 (top extension pair)"
+    predicted_targets:
+      - {kind: pair, layer: ext, u: ARG, v: none}
+
+  - id: RL2-17
+    title: Punctuation bundled with lexical edits
+    diagnosis_types: [Precedence]
+    description: >
+      Edits changing punctuation together with lexical material split between
+      ORTH:punc and the core analysis.
+    operations: [AddRule]
+    changes: >
+      Punctuation-only edits are orthographic; mixed bundles label the
+      lexical/grammatical change.
+    motivation: disagreement_probe
+    evidence_probe: "adjudication convention C1; probe screen ORTH~CORE disagreements on punctuation-adjacent edits"
+    predicted_targets:
+      - {kind: pair, layer: screen, u: CORE, v: ORTH}
+      - {kind: itemset, select: stratum, value: orth_punc,
+         metrics: [screen_pairwise, comp_pairwise]}
+
+  - id: RL2-18
+    title: Worked examples for the hard regions
+    diagnosis_types: [Boundary]
+    description: >
+      Examples added for each new rule (containment, rewording, relocation,
+      POS conventions, ARG, punctuation bundles), drawn from the independent
+      probe sample only (disjoint from D_ref/D_test).
+    operations: [AddExample]
+    changes: Ten additional worked examples appended to the guideline.
+    motivation: disagreement_probe
+    evidence_probe: "adjudication review of the independent probe sample"
+    predicted_targets: []

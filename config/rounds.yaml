@@ -1,0 +1,55 @@
+# Round definitions: run-id -> taxonomy version, spec, samples.
+# Version staging, fixed before any run: T1 (judgment-based domain
+# assignment, LEX:* refinements, WO dual-use), T2 (LEX:* pruned;
+# M/U/WO=>SYNT convention; R still judgment-based), T3 = endpoint
+# (full inventory + deterministic domain rule + packaging guidelines).
+# Scripts read this file to resolve the taxonomy version of a run id.
+rounds:
+  r1:
+    taxonomy: T1
+    spec: specs/T1_taxonomy.md
+    samples: [data/samples/d_ref.jsonl, data/samples/d_test.jsonl]
+  r2:
+    taxonomy: T2
+    spec: specs/T2_taxonomy.md
+    samples: [data/samples/d_ref.jsonl, data/samples/d_test.jsonl]
+  r3:
+    taxonomy: T3
+    spec: specs/T3_taxonomy.md
+    samples: [data/samples/d_ref.jsonl, data/samples/d_test.jsonl]
+  ctrl:
+    taxonomy: T1P
+    spec: specs/T1plus_taxonomy.md
+    samples: [data/samples/d_ref.jsonl, data/samples/d_test.jsonl]
+
+# Within-model reliability floor: repeat runs (30_annotate.py --tag _rep2)
+# at both endpoints. All five annotators are re-run, so the floor bounds the
+# noisiest panelist rather than assuming within-class homogeneity of the
+# temperature-0 models.
+repeat_runs:
+  r1: [claude, gpt, qwen, deepseek, kimi]
+  r3: [claude, gpt, qwen, deepseek, kimi]
+
+# Human adjudication subset H: drawn once from d_test strata with a fixed
+# seed, then adjudicated blind under the final version T3 by two coders
+# (see outputs/adjudication/two_coder_protocol.md). Round-2 panel labels
+# are scored against the same consensus through the logged crosswalk.
+adjudication:
+  h_n: 150
+  seed: 20260717
+  source: data/samples/d_test.jsonl
+
+# Population stratum shares over all 4,426 non-artifact first-reference
+# edits in the source pool (58 meta-comment sentences excluded), computed
+# with m2_utils.stratum from the full M2 file. These are the population
+# shares reported alongside the sampling allocations in the paper's
+# sampling table.
+population_stratum_weights:
+  orth_punc: 0.1211
+  orth_sim: 0.1188
+  residual_closed: 0.1279
+  residual_mixed: 0.1482
+  residual_open: 0.3057
+  trigger_other: 0.1245
+  trigger_str: 0.0513
+  wo_co: 0.0025

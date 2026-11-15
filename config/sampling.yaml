@@ -1,0 +1,37 @@
+# Sampling configuration. Do not change: the committed files in
+# data/samples/ are canonical, and this configuration reproduces them
+# byte-identically from the M2 file (see scripts/20_sample_datasets.py).
+seed: 20260717
+
+# Probe sample: simple random, natural label distribution (n=400). Drawn
+# FIRST and set aside for a separate probe annotation (not used by any round
+# in this repository; see the packaging entries of
+# specs/revision_log_T2_T3.yaml). Written to outputs/samples/ (not committed).
+d_probe:
+  n: 400
+
+# Refinement and held-out sets (drawn from the remainder AFTER d_probe is
+# removed, so all three sets are disjoint). Stratified to power diagnostic
+# classes; strata are defined in scripts/m2_utils.py::stratum().
+d_ref:
+  n: 300
+  allocation:            # target counts; deficits are rebalanced to residual_mixed
+    orth_sim: 25
+    orth_punc: 20
+    wo_co: all_60        # take 60% of whatever remains of R:WO/R:CO (tiny class)
+    trigger_str: 45
+    trigger_other: 70
+    residual_open: 50
+    residual_closed: 40
+    residual_mixed: 44
+d_test:
+  n: 200
+  allocation:
+    orth_sim: 17
+    orth_punc: 13
+    wo_co: all_rest
+    trigger_str: 30
+    trigger_other: 47
+    residual_open: 33
+    residual_closed: 27
+    residual_mixed: 29

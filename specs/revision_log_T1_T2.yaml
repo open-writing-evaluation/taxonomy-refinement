@@ -1,0 +1,59 @@
+# Prediction-locked revision log: T1 -> T2.
+# Frozen before any round ran. This transition reproduces a documented
+# expert revision that predated the measurement study; its changes are
+# registered here as falsifiable predictions.
+#
+# Note: the revision's own recorded rationale for removing the LEX:*
+# refinements was that "independent annotators are liable to diverge on the
+# sub-label" - an ANTICIPATED disagreement. RL1-01 turns that anticipation
+# into a measured prediction.
+#
+# Predicted pair targets are stated in the CROSSWALKED (final) label space;
+# itemset targets are computed in native space (within-round agreement is
+# rename-invariant). scripts/60_linkage.py evaluates every target on D_ref
+# and D_test.
+
+log: T1_T2
+entries:
+
+  - id: RL1-01
+    title: LEX:* lexical refinements too fine-grained to apply reliably
+    diagnosis_types: [FineGrained]
+    description: >
+      T1 refines lexical-content errors with LEX:syn / LEX:colloc /
+      LEX:coinage. The boundaries among near-synonymy, collocation, and
+      coinage are inherently fuzzy and depend on open-ended usage knowledge,
+      so annotators who agree an edit is LEX-CONT are predicted to diverge on
+      the sub-label. Predicted: low sub-label agreement conditional on shared
+      LEX use, and code-level scatter between LEX:* and none on open-class
+      replacements.
+    operations: [RemoveLabel, Merge]
+    changes: >
+      Remove the LEX:* refinement family; lexical-content errors are recorded
+      at the OP:DOM:POS level only (extension none).
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: itemset, select: stratum, value: residual_open,
+         metrics: [lexsub_pairwise, ext_pairwise, comp_pairwise]}
+      - {kind: pair, layer: ext, u: none, v: LEX, space: raw}   # raw-space pairs; the code is removed by T2
+
+  - id: RL1-02
+    title: Domain assignment for M/U edits is a structural judgment
+    diagnosis_types: [Boundary, Precedence]
+    description: >
+      T1 assigns M/U edits by judgment - "adds or deletes a predicate,
+      object, complement, or argument required by a construction" -> SYNT,
+      but a correction that "simply replaces" a lexical item -> LEX-CONT.
+      Whether an inserted or deleted content word is "required by a
+      construction" has no operational test; M/U edits on content words are
+      predicted to scatter between LEX-CONT and SYNT.
+    operations: [AddRule]
+    changes: >
+      Convention - every non-orthographic M, U, or WO edit is SYNT, no
+      exceptions; the functional identity of the item is preserved by the
+      extension label. (R remains judgment-based in T2; completed in T3.)
+    motivation: disagreement_predicted
+    predicted_targets:
+      - {kind: pair, layer: dom, u: LEX-CONT, v: STRUCT}
+      - {kind: itemset, select: stratum, value: residual_open,
+         metrics: [dom_pairwise]}
